@@ -19,6 +19,16 @@ const userSchema = new mongoose.Schema(
         type: String,
         default: "",
     },
+    age: {
+        type: Number,
+        required: false,
+        default: null
+    },
+    color: {
+        type: String,
+        required: true,
+        default: "red"
+    }
 },
 {timestamps: true}
 );

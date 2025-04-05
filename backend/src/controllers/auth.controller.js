@@ -4,7 +4,10 @@ import bcrypt from "bcryptjs"
 import cloudinary from "../lib/cloudinary.js";
 
 export const signup = async(req,res) => {
-    const{fullName,email,password} = req.body;
+    const{fullName,email,password,age,color} = req.body;
+    console.log(fullName,email,password)
+    console.log(password.length)
+    console.log("inside signup")
   try{
     // hash password
     if(!fullName || !email || !password) {
@@ -25,7 +28,9 @@ export const signup = async(req,res) => {
     const newUser = new User({
         fullName,
         email,
-        password:hashedPassword
+        password:hashedPassword,
+        age,
+        color
     })
 
     if(newUser) {
@@ -38,6 +43,8 @@ export const signup = async(req,res) => {
             fullName: newUser.fullName,
             email: newUser.email,
             profilePic: newUser.profilePic,
+            age: newUser.age,
+            color: newUser.color
         });
 
     }else {
@@ -52,11 +59,12 @@ export const signup = async(req,res) => {
 
 export const login = async(req,res) => {
    const { email, password} = req.body
+   console.log(email,password)
    try{
     const user = await User.findOne({email})
 
     if(!user) {
-        return res.status(400).json({message:"Invalid credentials"})
+        return res.status(400).json({message:"Invalid credentials 1"})
     }
 
  const isPasswordCorrect =  await bcrypt.compare(password, user.password);
@@ -71,6 +79,8 @@ export const login = async(req,res) => {
     fullName: user.fullName,
     email: user.email,
     profilePic: user.profilePic,
+    age: user.age,
+    color: user.color
  })
    } catch (error) {
 console.log("Error in login controller", error.message);
