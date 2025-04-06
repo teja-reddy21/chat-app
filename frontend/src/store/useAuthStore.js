@@ -1,6 +1,6 @@
 import {create} from "zustand"
 import { axiosInstance } from "../lib/axios";
-import { signup } from "../../../backend/src/controllers/auth.controller";
+import toast from "react-hot-toast";
 
 export const useAuthStore = create((set) => ({
     authUser: null,
@@ -23,6 +23,45 @@ set({authUser:res.data});
     },
 
     signup: async (data) => {
+       set({isSigningUp: true});
+       try {
+        const res = await axiosInstance.post("/auth/signup", data);
+        set({authUser:res.data});
+        toast.success("Account created successfully");
 
+       } catch (error) {
+          toast.error(error.response.data.message);
+
+       } finally {
+        set({isSigningUp: false})
+       }
     },
+
+    login: async (data) => {
+        set({ isLoggingIn: true});
+        try {
+            const res = await axiosInstance.post("/auth/login", data);
+            set({ authUser: res.data });
+            toast.success("Logged in successfully");
+      
+            
+          } catch (error) {
+            toast.error(error.response.data.message);
+          } finally {
+            set({ isLoggingIn: false });
+          }
+    },
+
+  logout: async () => {
+    try {
+        await axiosInstance.post("/auth/logout");
+        set({authUser: null});
+        toast.success("Logged out successfull");
+
+    } catch (error) {
+        toast.error(error.response.data.message);
+    }
+  },
+
+
 }));
