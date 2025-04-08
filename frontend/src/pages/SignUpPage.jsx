@@ -12,13 +12,13 @@ import toast from "react-hot-toast";
     password: ""
  });
 
- const {signup, isSigningUp} = useAuthStore();
+ const { signup, isSigningUp} = useAuthStore();
 
  const validateForm =() => {
       if (!formData.fullName.trim()) return toast.error("Full name is required");
       if (!formData.email.trim()) return toast.error("Email name is required");
-      if (!/\!S+@\S+\.\S+/.test(formData.email)) return toast.error("Invalid email formal");
-      if (!formData.password.trim()) return toast.error("Password is required");
+      if (!/\S+@\S+\.\S+/.test(formData.email)) return toast.error("Invalid email formal");
+      if (!formData.password) return toast.error("Password is required");
       if (formData.password.length < 6) return toast.error("Password must be at least 6 characters");
 
       return true
@@ -50,7 +50,7 @@ import toast from "react-hot-toast";
             </div>
             </div>
 
-<from onSubmit={handleSubmit} className="space-y-6">
+<form onSubmit={handleSubmit} className="space-y-6">
 <div className="form-control">
               <label className="label">
                 <span className="label-text font-medium">Full Name</span>
@@ -126,7 +126,7 @@ import toast from "react-hot-toast";
                 "Create Account"
               )}
             </button>
-</from>
+</form>
 
 <div className="text-center">
             <p className="text-base-content/60">

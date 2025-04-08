@@ -4,10 +4,8 @@ import bcrypt from "bcryptjs"
 import cloudinary from "../lib/cloudinary.js";
 
 export const signup = async(req,res) => {
-    const{fullName,email,password,age,color} = req.body;
-    console.log(fullName,email,password)
-    console.log(password.length)
-    console.log("inside signup")
+    const{fullName,email,password} = req.body;
+   
   try{
     // hash password
     if(!fullName || !email || !password) {
@@ -18,7 +16,7 @@ export const signup = async(req,res) => {
         return res.status(400).json({ message: "password must be at least 6 characters"});
     }
 
-    const user = await User.findOne({email})
+    const user = await User.findOne({email});
 
     if (user) return res.status(400).json({ message: "Email already exists"});
 
@@ -28,10 +26,9 @@ export const signup = async(req,res) => {
     const newUser = new User({
         fullName,
         email,
-        password:hashedPassword,
-        age,
-        color
-    })
+        password:hashedPassword
+        
+    });
 
     if(newUser) {
         //generate jwt token here
@@ -42,9 +39,8 @@ export const signup = async(req,res) => {
             _id: newUser._id,
             fullName: newUser.fullName,
             email: newUser.email,
-            profilePic: newUser.profilePic,
-            age: newUser.age,
-            color: newUser.color
+            profilePic: newUser.profilePic
+        
         });
 
     }else {
@@ -58,10 +54,10 @@ export const signup = async(req,res) => {
 };
 
 export const login = async(req,res) => {
-   const { email, password} = req.body
-   console.log(email,password)
+   const { email, password} = req.body;
+ 
    try{
-    const user = await User.findOne({email})
+    const user = await User.findOne({email});
 
     if(!user) {
         return res.status(400).json({message:"Invalid credentials 1"})
@@ -72,16 +68,15 @@ export const login = async(req,res) => {
     return res.status(400).json({ message: "Invalid credentials"});
  }
 
- generateToken(user._id,res)
+ generateToken(user._id,res);
 
  res.status(200).json({
     _id:user._id,
     fullName: user.fullName,
     email: user.email,
-    profilePic: user.profilePic,
-    age: user.age,
-    color: user.color
- })
+    profilePic: user.profilePic
+  
+ });
    } catch (error) {
 console.log("Error in login controller", error.message);
 res.status(500).json({ message: "Internal Server Error"});
