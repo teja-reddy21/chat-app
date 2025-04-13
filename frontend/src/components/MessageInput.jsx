@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useChatStore } from "../store/useChatStore";
+import { Image, Send } from "lucide-react";
 
 const MessageInput = () => {
     const [text, setText] = useState("");
@@ -91,6 +92,7 @@ const MessageInput = () => {
                      ${imagePreview ? "text-emerald-500" : "text-zinc-400"}`}
             onClick={() => fileInputRef.current?.click()}
           >
+            {/* <Image size={20} /> */}
             <Image size={20} />
           </button>
         </div>
@@ -99,7 +101,8 @@ const MessageInput = () => {
           className="btn btn-sm btn-circle"
           disabled={!text.trim() && !imagePreview}
         >
-          <Send size={22} />
+          {/* <Send size={22} /> */}
+          <Send size={22}/>
         </button>
       </form>
         </div>
